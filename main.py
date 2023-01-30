@@ -22,6 +22,11 @@ except ImportError as e:
 # set path to chromedriver
 # options = webdriver.ChromeOptions() <= for headless (finished product)
 # options.add_argument('--headless')  <-------|
+target_profile = "/ExtonRegionChamber/"
+target_website = "https://www.facebook.com"
+target_endpoint = "following"
+target_url = target_website + target_profile + target_endpoint
+
 def clean_up():
     print("Cleaning up...")
     os.subprosses.call("clear", shell=True)
@@ -37,7 +42,7 @@ path = os.getcwd() + "/"
 driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
 
 # open the webpage
-driver.get("https://www.facebook.com/")
+driver.get(target_website)
 time.sleep(2)
 
 # login to facebook
@@ -56,7 +61,7 @@ driver.find_element_by_name("login").click()
 time.sleep(5)
 
 # open the facebook page
-driver.get("https://www.facebook.com/ExtonRegionChamber/following")
+driver.get(target_url)
 time.sleep(10)
 
 
