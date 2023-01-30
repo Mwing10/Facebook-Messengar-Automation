@@ -7,7 +7,13 @@ from bs4 import BeautifulSoup
 import os
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.service import Service as ChromeService
-import alive_progress
+from alive_progress import alive_bar
+
+# alive progress bar (also for finished product)
+# with alive_bar(100, bar="classic") as bar:
+#    for i in range(100):
+#        time.sleep(0.1)
+#        bar()
 
 # set path to chromedriver
 # options = webdriver.ChromeOptions() <= for headless (finished product)
