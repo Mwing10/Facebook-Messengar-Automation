@@ -22,6 +22,10 @@ except ImportError as e:
 # set path to chromedriver
 # options = webdriver.ChromeOptions() <= for headless (finished product)
 # options.add_argument('--headless')  <-------|
+def clean_up():
+    print("Cleaning up...")
+    os.subprosses.call("clear", shell=True)
+
 def grab_login(file):
     with open(file, 'r') as f_reader:
         for login in f_reader:
@@ -57,3 +61,4 @@ time.sleep(10)
 
 
 driver.close()
+clean_up()
