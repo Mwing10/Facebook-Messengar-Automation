@@ -37,7 +37,7 @@ driver.get("https://www.facebook.com/")
 time.sleep(2)
 
 # login to facebook
-user_details = grab_login(f"{path}/info/user.txt")
+user_details = grab_login(f"{path}info/user.txt")
 usern = user_details[0]
 passw = user_details[1]
 
