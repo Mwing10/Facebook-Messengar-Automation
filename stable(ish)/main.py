@@ -1,0 +1,100 @@
+try:
+    from selenium import webdriver
+    from selenium.webdriver.common.keys import Keys
+    from webdriver_manager.chrome import ChromeDriverManager
+    from selenium.webdriver.chrome.service import Service as ChromeService
+    from bs4 import BeautifulSoup
+    import time, random, os, csv, subprocess
+    import pandas as pd
+    from alive_progress import alive_bar
+except ImportError as e:
+    print("Unable to import some libraries, please install them first with 'python3 -m pip install -r requirements.txt'\n", e)
+    time.sleep(3)
+    exit()
+options = webdriver.ChromeOptions() # for headless
+options.add_argument('--headless')
+
+# start and init the driver + variables
+driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install())) #options=options, (for headless)
+path = os.getcwd() + "/"
+bad_links = ["videos", "login", "photos", "login/", "photos/", "videos/", "login?next", "photos?tab", "videos?tab", "login?next=", "photos?tab=", "videos?tab=", "reg/", "reg", "?rs=7", "recover/", "photo/", "/login/", "/recover/", "/photo/"]
+links = []
+target_profile = ""
+target_website = ""
+target_endpoint = ""
+target_url = ""
+
+def grab_login(file):
+    with open(file, 'r') as f_reader:
+        for login in f_reader:
+            login = login.split(":")
+            return login
+
+def login(target_website):
+    driver.get(target_website + "/login")
+    user_details = grab_login(f"{path}info/user.txt")
+    usern = user_details[0]
+    passw = user_details[1]
+    username = driver.find_element_by_id("email")
+    username.send_keys(usern)
+    time.sleep(2.5)
+    password = driver.find_element_by_id("pass")
+    time.sleep(3.5)
+    password.send_keys(passw)
+    time.sleep(2.5)
+    driver.find_element_by_name("login").click()
+    time.sleep(2.5)
+
+def do_ScrapFollowing():
+    for elem in elems:
+        if elem.get_attribute("href").startswith("https://www.facebook.com/"):
+            if elem.get_attribute("href") != bad_links:
+                links.append(elem.get_attribute("href"))
+
+def clean_up():
+    print("Cleaning up...")
+    time.sleep(1)
+    subprocess.run("clear", shell=True)
+
+# run while alive
+if __name__ == "__main__":
+
+    # start the program
+    target_profile = input("Enter the profile you want to scrape (i.e. /ExtonRegionChamber/ [yes with slashes]): ")
+    target_website = input("Enter the website you want to scrape (i.e. https://facebook.com): ")
+    target_endpoint = input("Enter the endpoint you want to scrape (i.e. following): ")
+    target_url = target_website + target_profile + target_endpoint
+
+    print("Logging in...")
+    grab_login(f"{path}info/user.txt") # grab the login details
+    login(target_website) # login to facebook
+    clean_up()
+    driver.get(target_url)
+
+    with alive_bar(100, dual_line=True, bar="classic") as bar:
+        for i in range(3):
+            bar.text("Target Aquired: %s" % target_url) 
+            time.sleep(1)
+            driver.get(target_url)
+            time.sleep(1)
+            bar()
+        for i in range(62):
+            bar.text("Scraping...")
+            driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+            time.sleep(1)
+            elems = driver.find_elements_by_xpath("//a[@href]") 
+            time.sleep(1)
+            bar()
+        for i in range(15):
+            bar.text("Saving...")
+        for i in range(30):
+            bar.text("Cleaning up...") # room for two more increment of 15 to make it 100
+            bar() # clean up the terminal
+    
+    do_ScrapFollowing()
+    with open(f'{path}current/following.csv', 'w') as f:
+        writer = csv.writer(f)
+        writer.writerow(links)
+    clean_up()
+    driver.close()
+    print("Finished! Contents scrapped saved to following.csv")
