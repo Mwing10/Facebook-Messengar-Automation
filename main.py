@@ -1,13 +1,17 @@
 #Import Libraries
-from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
-import time, random
-import pandas as pd
-from bs4 import BeautifulSoup
-import os
-from webdriver_manager.chrome import ChromeDriverManager
-from selenium.webdriver.chrome.service import Service as ChromeService
-from alive_progress import alive_bar
+try:
+    from selenium import webdriver
+    from selenium.webdriver.common.keys import Keys
+    from webdriver_manager.chrome import ChromeDriverManager
+    from selenium.webdriver.chrome.service import Service as ChromeService
+    from bs4 import BeautifulSoup
+    import time, random, os
+    import pandas as pd
+    from alive_progress import alive_bar
+except ImportError as e:
+    print("Unable to import some libraries, please install them first with 'python3 -m pip install -r requirements.txt'\n", e)
+    time.sleep(3)
+    exit()
 
 # alive progress bar (also for finished product)
 # with alive_bar(100, bar="classic") as bar:
@@ -40,12 +44,7 @@ time.sleep(5)
 
 # open the facebook page
 driver.get("https://www.facebook.com/ExtonRegionChamber/following")
-def get_following():
-    following = []
-    soup = BeautifulSoup(driver.page_source, 'html.parser')
-    for link in soup.find_all('', class_=''): # <== when not on school wifi add class names for soup
-        following.append(link.get('href')) # think about checking this up.. dont look right
-    return following
+
 
 time.sleep(10)
 
