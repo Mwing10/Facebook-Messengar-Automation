@@ -13,7 +13,7 @@ options = webdriver.ChromeOptions() # for headless
 options.add_argument('--headless')
 
 # start and init the driver + variables
-driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install())) #options=options, (for headless)
+driver = webdriver.Chrome(options=options, service=ChromeService(ChromeDriverManager().install())) #options=options, (for headless)
 path = os.getcwd() + "/"
 bad_links = ["videos", "login", "photos", "login/", "photos/", "videos/", "login?next", "photos?tab", "videos?tab", "login?next=", "photos?tab=", "videos?tab=", "reg/", "reg", "?rs=7", "recover/", "photo/", "/login/", "/recover/", "/photo/"]
 links = []

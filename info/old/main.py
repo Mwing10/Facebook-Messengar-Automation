@@ -20,8 +20,9 @@ except ImportError as e:
 #        bar()
 
 # set path to chromedriver
-# options = webdriver.ChromeOptions() <= for headless (finished product)
-# options.add_argument('--headless')  <-------|
+options = webdriver.ChromeOptions() # <= for headless (finished product)
+options.add_argument('--headless')  # <-------|
+
 target_profile = "/ExtonRegionChamber/"
 target_website = "https://www.facebook.com"
 target_endpoint = "following"
@@ -38,8 +39,8 @@ def grab_login(file):
             return login
 
 path = os.getcwd() + "/"
-# driver = webdriver.Chrome(options=options, service=ChromeService(ChromeDriverManager().install())) <= for headless (finished product)
-driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
+driver = webdriver.Chrome(options=options, service=ChromeService(ChromeDriverManager().install())) # <= for headless (finished product)
+# driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
 
 # open the webpage
 driver.get(target_website)
