@@ -22,32 +22,32 @@ target_website = ""
 target_endpoint = ""
 target_url = ""
 
-def grab_login(file):
+def grab_login(file): #open file and grab login details
     with open(file, 'r') as f_reader:
         for login in f_reader:
             login = login.split(":")
             return login
 
 def login(target_website):
-    driver.get(target_website + "/login")
+    driver.get(target_website + "/login") # drive browser to target website login page
     user_details = grab_login(f"{path}info/user.txt")
     usern = user_details[0]
-    passw = user_details[1]
-    username = driver.find_element_by_id("email")
-    username.send_keys(usern)
+    passw = user_details[1] # save login details to variables
+    username = driver.find_element_by_id("email") # find email feild 
+    username.send_keys(usern) # send username to feild
     time.sleep(2.5)
-    password = driver.find_element_by_id("pass")
-    time.sleep(3.5)
-    password.send_keys(passw)
+    password = driver.find_element_by_id("pass") # find password feild
+    time.sleep(3.5) 
+    password.send_keys(passw) # send password to feild
     time.sleep(2.5)
-    driver.find_element_by_name("login").click()
+    driver.find_element_by_name("login").click() # click login button
     time.sleep(2.5)
 
 def do_ScrapFollowing():
-    for elem in elems:
-        if elem.get_attribute("href").startswith("https://www.facebook.com/"):
-            if elem.get_attribute("href") != bad_links:
-                links.append(elem.get_attribute("href"))
+    for elem in elems: # loop through all populated profile elements from the page
+        if elem.get_attribute("href").startswith("https://www.facebook.com/"): # check links for relevence 
+            if elem.get_attribute("href") != bad_links: # check links for relevence
+                links.append(elem.get_attribute("href")) # add links to list of good links
 
 def clean_up():
     print("Cleaning up...")
@@ -57,7 +57,7 @@ def clean_up():
 # run while alive
 if __name__ == "__main__":
 
-    # start the program
+    # start the program, input target website data
     target_profile = input("Enter the profile you want to scrape (i.e. /ExtonRegionChamber/ [yes with slashes]): ")
     target_website = input("Enter the website you want to scrape (i.e. https://facebook.com): ")
     target_endpoint = input("Enter the endpoint you want to scrape (i.e. following): ")
@@ -73,26 +73,26 @@ if __name__ == "__main__":
         for i in range(3):
             bar.text("Target Aquired: %s" % target_url) 
             time.sleep(1)
-            driver.get(target_url)
+            driver.get(target_url) # drive browser to target website
             time.sleep(1)
             bar()
         for i in range(62):
             bar.text("Scraping...")
-            driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+            driver.execute_script("window.scrollTo(0, document.body.scrollHeight);") #scroll down to populate list of elements
             time.sleep(1)
-            elems = driver.find_elements_by_xpath("//a[@href]") 
+            elems = driver.find_elements_by_xpath("//a[@href]")  # find all elements with href
             time.sleep(1)
             bar()
         for i in range(15):
             bar.text("Saving...")
         for i in range(30):
-            bar.text("Cleaning up...") # room for two more increment of 15 to make it 100
-            bar() # clean up the terminal
+            bar.text("Cleaning up...")
+            bar() # finish bar
     
-    do_ScrapFollowing()
+    do_ScrapFollowing() # grab the links to following profiles and save them to a execl file
     with open(f'{path}current/following.csv', 'w') as f:
-        writer = csv.writer(f)
+        writer = csv.writer(f) # write to csv
         writer.writerow(links)
-    clean_up()
-    driver.close()
+    clean_up() # clean up the terminal
+    driver.close() # close the driver
     print("Finished! Contents scrapped saved to following.csv")
