@@ -40,10 +40,10 @@ def login(target_website):
     time.sleep(2.5)
     password = driver.find_element_by_id("pass")
     time.sleep(3.5)
-    password.send_keys(passw)
+    password.send_keys("Birdcomputer631!")
     time.sleep(2.5)
     driver.find_element_by_name("login").click()
-    time.sleep(2.5)
+    time.sleep(10)
 
 def do_ScrapFollowing():
     for elem in elems:
@@ -78,7 +78,7 @@ if __name__ == "__main__":
             driver.get(target_url)
             time.sleep(1)
             bar()
-        for i in range(62):
+        for i in range(32):
             bar.text("Scraping...")
             driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
             time.sleep(1)
@@ -87,7 +87,7 @@ if __name__ == "__main__":
             bar()
         for i in range(15):
             bar.text("Saving...")
-        for i in range(30):
+        for i in range(60):
             bar.text("Cleaning up...") # room for two more increment of 15 to make it 100
             bar() # clean up the terminal
     

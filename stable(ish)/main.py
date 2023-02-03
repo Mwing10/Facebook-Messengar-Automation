@@ -30,7 +30,7 @@ def grab_login(file): #open file and grab login details
 
 def login(target_website):
     driver.get(target_website + "/login") # drive browser to target website login page
-    user_details = grab_login(f"/Users/mikewing/chamberofcommerce/Facebook-Messenger-Automation-1/info/user.txt")
+    user_details = grab_login(f"~/info/user.txt")
     usern = user_details[0]
     passw = user_details[1] # save login details to variables
     username = driver.find_element_by_id("email") # find email feild 
@@ -41,7 +41,7 @@ def login(target_website):
     password.send_keys(passw) # send password to feild
     time.sleep(2.5)
     driver.find_element_by_name("login").click() # click login button
-    time.sleep(2.5)
+    time.sleep(10)
 
 def do_ScrapFollowing():
     for elem in elems: # loop through all populated profile elements from the page
@@ -90,7 +90,7 @@ if __name__ == "__main__":
             bar() # finish bar
     
     do_ScrapFollowing() # grab the links to following profiles and save them to a execl file
-    with open(f'{path}following.csv', 'w') as f:
+    with open(f'{path}current/following.csv', 'w') as f:
         writer = csv.writer(f) # write to csv
         writer.writerow(links)
     clean_up() # clean up the terminal
